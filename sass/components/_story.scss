@@ -1,0 +1,87 @@
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+  background-color: rgba($color-white, 0.75);
+  border-radius: 3px;
+  padding: 6rem;
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+  // transform: skewY(-3deg);
+
+  // & > * {
+  //   // because the shape already has transform, hence the transform defined here wont work inside the shape.
+  //to solve this issue, we need to define the skewX in shape manually
+  //   // transform: skewX(12deg);
+  // }
+
+  @include respond(tab-port) {
+    width: 100%;
+    padding: 4rem;
+    padding-left: 7rem;
+  }
+
+  @include respond(phone) {
+    transform: skewX(0);
+  }
+
+  &__shape {
+    width: 15rem;
+    height: 15rem;
+    // background-color: orangered;
+    float: left;
+    -webkit-shape-outside: circle(50% at 50% 50%);
+    // in 2017, this will only work in chrome and safari, it will not work in firefox, neither in internet explorer and edge.
+    shape-outside: circle(50% at 50% 50%);
+    // it will define the shape outside the element.
+    // radius, 50%, the radius will be half the height and the width of the element, which in this case will be 7.5 rem
+    // 50% 50% means that center horizontally and vertically.
+    // in order to work, the element need to be floated, height and width.
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+    transform: translateX(-3rem) skewX(12deg); // the best way to move the element which is floated, the best way is use the translate without using any margin
+
+    position: relative;
+
+    @include respond(phone) {
+      transform: translateX(-3rem) skewX(0);
+    }
+  }
+  &__img {
+    width: 100%; // if the image is wider than height, then use hight property
+    // height: 100%;
+    transform: translateX(0rem) scale(1);
+    backface-visibility: hidden;
+    transition: all 0.5s;
+  }
+
+  &__text {
+    transform: skewX(12deg);
+    @include respond(phone) {
+      transform: skewX(0);
+    }
+  }
+  &__caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    text-transform: uppercase;
+    color: $color-white;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s;
+    backface-visibility: hidden; // to fix the image subtle to the right issue
+  }
+  &:hover &__caption {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover &__img {
+    transform: translateX(0rem) scale(1);
+    filter: blur(3px) brightness(80%);
+  }
+}
